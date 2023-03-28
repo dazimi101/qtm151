@@ -35,7 +35,7 @@ United States Congress dataset
 
 Create table from codebook/dictionary
 -- SQLBook: Code
--- Active: 1674444757671@@127.0.0.1@5432@postgres
+-- Active: 1679932144938@@127.0.0.1@5432@postgres
 -- We start by deleting the old table
 -- SQL does not allow you to create a table if one already exists
 DROP TABLE IF EXISTS us_congress_members;
@@ -157,7 +157,7 @@ Try it yourself!
 SELECT * FROM us_congress_members
 ```
 -- SQLBook: Code
--- Active: 1674444757671@@127.0.0.1@5432@postgres
+-- Active: 1679932144938@@127.0.0.1@5432@postgres
 -- Write your own code
 -- Note in the instructor's computer this is:
 -- You just have to change the FROM argument
@@ -165,8 +165,11 @@ SELECT * FROM us_congress_members
 -- COPY us_congress_members
 -- FROM '/private/tmp/data/us_congress_members.csv'
 -- WITH (DELIMITER ',', FORMAT csv, HEADER MATCH);
+COPY us_congress_members
+FROM '/private/tmp/data/us_congress_members.csv'
+WITH (DELIMITER ',', FORMAT csv, HEADER MATCH);
 
-
+SELECT * FROM us_congress_members
 
 
 -- SQLBook: Markup
