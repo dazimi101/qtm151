@@ -15,6 +15,7 @@ called "SQL queries"
 
 Basic Syntax
 -- SQLBook: Code
+-- Active: 1679932144938@@127.0.0.1@5432@postgres
 -- Commands separated by a semicolon ";"
 -- Commands in upper case, inputs lower case
 -- Include comments with two dashes "--"
@@ -88,6 +89,21 @@ The quiz will use the Formula 1 dataset
 with column names and data types
 - You will need to use the SQL command ``` CREATE TABLE ```
 
+-- SQLBook: Code
+-- Active: 1679932144938@@127.0.0.1@5432@postgres
+DROP TABLE IF EXISTS us_congress_members;
+
+-- Note in SQL the codebook is also called a "dictionary"
+-- The option PRIMARY KEY indicates that this is the unique identifier
+CREATE TABLE us_congress_members (
+        member_id    int PRIMARY KEY,
+        full_name    varchar(30),
+        last_name    varchar(30),
+        member_title varchar(30),
+        state        varchar(30),
+        party_name   varchar(30),
+        chamber      varchar(30)
+);
 -- SQLBook: Markup
 
 <font size = "5">
@@ -101,6 +117,12 @@ from ".csv" files using the command <br>
 - Display the dataset using ``` SELECT * FROM .... ```
 - See Lecture 18 for more details
 
+-- SQLBook: Code
+COPY us_congress_members
+FROM '/private/tmp/data/us_congress_members.csv'
+WITH (DELIMITER ',', FORMAT csv, HEADER MATCH);
+
+SELECT * FROM us_congress_members
 -- SQLBook: Markup
 <font size = "5">
 
@@ -108,6 +130,10 @@ from ".csv" files using the command <br>
 
 - Subset one of the above datasets using ``` WHERE ```
 - Then sort the datasets in ascending or descending order 
+-- SQLBook: Code
+SELECT full_name, state FROM us_congress_members
+WHERE party_name = 'Democratic'
+ORDER BY member_id DESC;
 -- SQLBook: Markup
 <font size = "5">
 
@@ -120,6 +146,11 @@ from ".csv" files using the command <br>
 
 
 HINT: See the end of lectures 17
+-- SQLBook: Code
+SELECT chamber,
+    COUNT(*) AS num_members
+FROM us_congress_members
+GROUP BY chamber;
 -- SQLBook: Markup
 <font size = "5">
 
@@ -129,6 +160,12 @@ HINT: See the end of lectures 17
 - Then sort using ``` ORDER BY ```
 
 HINT: See the end of lectures 17 and 18
+-- SQLBook: Code
+SELECT party_name,
+    AVG(member_id) as avg_member_id
+FROM us_congress_members
+GROUP BY party_name
+ORDER BY avg_member_id DESC;
 -- SQLBook: Markup
 <font size = "5">
 
@@ -136,3 +173,9 @@ HINT: See the end of lectures 17 and 18
 
 - Compute an aggregate statistict using ```GROUP BY```
 - Subset one of the above datasets using ``` HAVING ```
+-- SQLBook: Code
+SELECT party_name,
+    AVG(member_id) as avg_member_id
+FROM us_congress_members
+GROUP BY party_name
+HAVING AVG(member_id) > 800
